@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    allowedHosts: ["132400e9a7e2.ngrok-free.app"],
+    allowedHosts: ["yaroven.github.io/TgBot-frontend/"],
   },
-  base: "/TgBot/",
+  base: "/TgBot-frontend/",
 });
