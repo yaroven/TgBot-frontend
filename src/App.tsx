@@ -1,23 +1,11 @@
-// const cakeImage =
-//   "https://static.vecteezy.com/system/resources/previews/036/053/451/non_2x/ai-generated-cartoon-birthday-cake-transparent-background-free-png.png";
-// const pizzaImage =
-//   "https://images.vexels.com/media/users/3/249523/isolated/preview/02783f79ece2cffaf68f8921f2c978be-pizza-color-stroke.png";
-// const foods = [
-//   { text: "Cake", imageSrc: cakeImage },
-//   { text: "Pizza", imageSrc: pizzaImage },
-// ];
-import { useState } from "react";
-import FoodCard from "./components/FoodCard";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import FoodCard from "./components/FoodCard/FoodCard";
+import { handleCountChange } from "./components/ProductList/handlers/handleCountChange";
+import { useGlobal } from "./contexts/GlobalContext";
 import { fetchProducts } from "./services/Product.service";
+import type { Product } from "./types/Product";
 
-type Product = {
-  name: string;
-  imageSrc: string;
-};
-
-function App() {
+export default function App() {
   const {
     data: foods,
     isLoading,
@@ -27,38 +15,7 @@ function App() {
     queryFn: fetchProducts,
   });
 
-  const [cart, setCart] = useState<
-    Record<string, { name: string; imageSrc: string; count: number }>
-  >({});
-
-  const handleCountChange = (key: string, food: Product, count: number) => {
-    setCart((prev) => {
-      const updated = { ...prev };
-      if (count === 0) {
-        delete updated[key];
-      } else {
-        updated[key] = { ...food, count };
-      }
-      return updated;
-    });
-  };
-
-  const handleOrder = async () => {
-    const items = Object.values(cart);
-    if (items.length === 0) {
-      alert("Cart is empty");
-      return;
-    }
-    window.Telegram.WebApp.sendData(JSON.stringify(items));
-    try {
-      await axios.post("/api/order", { items });
-      alert("Order sent!");
-      setCart({});
-    } catch (err) {
-      console.error(err);
-      alert("Failed to send order");
-    }
-  };
+  const { cart, setCart } = useGlobal();
 
   if (isLoading) {
     return (
@@ -94,7 +51,9 @@ function App() {
               key={key}
               text={food.name}
               imageSrc={food.imageSrc}
-              onCountChange={(count) => handleCountChange(key, food, count)}
+              onCountChange={(count) =>
+                handleCountChange({ key, food, count }, setCart)
+              }
             />
           );
         })}
@@ -117,8 +76,11 @@ function App() {
 
       <div className="fixed bottom-4 left-0 right-0 px-4">
         <button
-          className="w-full bg-[#51ee2a] text-white py-3 rounded-xl font-semibold text-lg shadow-md"
-          onClick={handleOrder}
+          className={`w-full bg-[#398b24] text-white py-3 rounded-xl font-semibold text-lg shadow-md duration-300  ${
+            Object.values(cart).length === 0
+              ? "cursor-not-allowed"
+              : "hover:bg-[#45d61f] active:bg-[#3ac014]"
+          }`}
           disabled={Object.values(cart).length === 0}
         >
           Order Now
@@ -127,5 +89,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
