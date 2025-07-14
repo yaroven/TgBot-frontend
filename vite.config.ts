@@ -7,5 +7,5 @@ export default defineConfig({
   server: {
     allowedHosts: ["132400e9a7e2.ngrok-free.app"],
   },
-  base: "/ІМʼЯ-РЕПОЗИТОРІЮ/",
+  base: "/TgBot/",
 });
