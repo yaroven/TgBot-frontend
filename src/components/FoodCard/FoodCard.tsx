@@ -17,9 +17,7 @@ export default function FoodCard({
   const decrement = () => setCount((c) => (c > 0 ? c - 1 : 0));
 
   useEffect(() => {
-    if (onCountChange) {
-      onCountChange(count);
-    }
+    if (onCountChange) onCountChange(count);
   }, [count]);
 
   return (

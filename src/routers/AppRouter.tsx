@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 export default function AppRouter() {
-  console.log("AppRouter rendered");
   return (
     <BrowserRouter basename="/TgBot-frontend">
       <GlobalProvider>
