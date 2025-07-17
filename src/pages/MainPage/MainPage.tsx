@@ -1,9 +1,11 @@
 import CartMenu from "../../components/CartMenu/CartMenu";
 import ProductList from "../../components/ProductList/ProductList";
 import { useGlobal } from "../../contexts/GlobalContext";
+import useAuth from "../../hooks/useAuth";
 
 export default function MainPage() {
   const { isCartMenuOpen, setIsCartMenuOpen } = useGlobal();
+  useAuth();
   return (
     <div className="min-h-screen pb-[100px] relative bg-[#f4f4f5] dark:bg-[#212121] px-4 py-6">
       <h1 className="text-2xl font-semibold text-center text-black dark:text-white mb-6">
